@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💘 Life Partner Chance Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe8f5 50%, #ffd6eb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #d63384;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(214, 51, 132, 0.1);
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #f0d9e7;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #d63384;
+            box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #d63384 0%, #e91e63 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(214, 51, 132, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: none;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff5f9 0%, #ffe8f5 100%);
+            border-radius: 12px;
+        }
+
+        .results-header h2 {
+            color: #d63384;
+            margin-bottom: 10px;
+        }
+
+        .results-header p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .month-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px;
+            margin-bottom: 12px;
+            background: #fafafa;
+            border-radius: 12px;
+            border-left: 4px solid #f0d9e7;
+            transition: all 0.3s ease;
+        }
+
+        .month-item:hover {
+            background: #f5f5f5;
+            transform: translateX(5px);
+        }
+
+        .month-item.best {
+            background: linear-gradient(135deg, #fff5f9 0%, #ffe8f5 100%);
+            border-left: 4px solid #d63384;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.15);
+        }
+
+        .month-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.05em;
+            min-width: 120px;
+        }
+
+        .percentage {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #d63384;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .caption {
+            flex: 1;
+            text-align: right;
+            color: #666;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .best-badge {
+            background: linear-gradient(135deg, #d63384 0%, #e91e63 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .disclaimer {
+            text-align: center;
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff9e6;
+            border-radius: 12px;
+            border: 2px dashed #ffd700;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .card {
+                padding: 25px;
+            }
+
+            .month-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .month-name, .percentage, .caption {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💘 Life Partner Predictor</h1>
+            <p>Staying is delusion is better than staying single :-)</p>
+        </div>
+
+        <div class="card">
+            <form id="predictForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" required>
+                </div>
+
+                <div class="error-message" id="errorMessage">
+                    Please fill in both fields to get your prediction!
+                </div>
+
+                <button type="submit" class="submit-btn">✨ Predict My Chances</button>
+            </form>
+        </div>
+
+        <div class="card results" id="results">
+            <div class="results-header">
+                <h2>Your Monthly Chances</h2>
+                <p id="userGreeting"></p>
+            </div>
+
+            <div id="monthlyResults"></div>
+        </div>
+
+        <div class="disclaimer">
+            Developed by Arnav Deore for fun😂
+        </div>
+    </div>
+
+    <script>
+        // Month names and emojis for display
+        const months = [
+            { name: 'January', emoji: '❄️' },
+            { name: 'February', emoji: '💕' },
+            { name: 'March', emoji: '🌸' },
+            { name: 'April', emoji: '🌷' },
+            { name: 'May', emoji: '🌺' },
+            { name: 'June', emoji: '☀️' },
+            { name: 'July', emoji: '🌻' },
+            { name: 'August', emoji: '🌴' },
+            { name: 'September', emoji: '🍂' },
+            { name: 'October', emoji: '🎃' },
+            { name: 'November', emoji: '🍁' },
+            { name: 'December', emoji: '🎄' }
+        ];
+
+        /**
+         * DETERMINISTIC HASH FUNCTION
+         * This function converts a string into a numeric hash.
+         * Same input will ALWAYS produce the same hash value.
+         * This is crucial for ensuring consistent results.
+         */
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32-bit integer
+            }
+            return Math.abs(hash);
+        }
+
+        /**
+         * SEEDED RANDOM NUMBER GENERATOR
+         * Uses a seed value to generate "random" numbers deterministically.
+         * Same seed will always produce the same sequence of numbers.
+         */
+        function seededRandom(seed) {
+            const x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        }
+
+        /**
+         * GENERATE DETERMINISTIC PERCENTAGES
+         * Takes name and DOB, creates a unique seed, and generates 12 percentages.
+         * Each percentage is between 10% and 95%.
+         * Same input = same output, always!
+         */
+        function generateMonthlyChances(name, dob) {
+            // Combine name and DOB into a single string for hashing
+            const combinedString = `${name.toLowerCase().trim()}-${dob}`;
+            
+            // Generate base hash from the combined string
+            const baseHash = simpleHash(combinedString);
+            
+            // Generate 12 percentages (one for each month)
+            const percentages = [];
+            for (let i = 0; i < 12; i++) {
+                // Use base hash + month index to create unique seed for each month
+                const seed = baseHash + i * 1000;
+                const random = seededRandom(seed);
+                
+                // Convert to percentage between 10 and 95
+                const percentage = Math.floor(random * 86) + 10; // 86 range (10-95)
+                percentages.push(percentage);
+            }
+            
+            return percentages;
+        }
+
+        /**
+         * GET CAPTION BASED ON PERCENTAGE
+         * Returns a fun message based on the chance percentage
+         */
+        function getCaption(percentage, isBest) {
+            if (isBest) {
+                if (percentage >= 80) return "Fate is strongly in your favour! 🌟";
+                if (percentage >= 60) return "Excellent chances this month! 💫";
+                return "Best time to meet new people! ✨";
+            }
+            
+            if (percentage >= 70) return "Great chances! 🔥";
+            if (percentage >= 50) return "Good possibilities! 💝";
+            if (percentage >= 30) return "Keep an open heart! 💗";
+            return "Stay patient! 💖";
+        }
+
+        // Handle form submission
+        document.getElementById('predictForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const dob = document.getElementById('dob').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Validate inputs
+            if (!name || !dob) {
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            errorMessage.classList.remove('show');
+            
+            // Generate deterministic percentages
+            const percentages = generateMonthlyChances(name, dob);
+            
+            // Find best month (highest percentage)
+            const maxPercentage = Math.max(...percentages);
+            const bestMonthIndex = percentages.indexOf(maxPercentage);
+            
+            // Display results
+            displayResults(name, dob, percentages, bestMonthIndex);
+        });
+
+        /**
+         * DISPLAY RESULTS
+         * Shows the monthly chances with formatting and animations
+         */
+        function displayResults(name, dob, percentages, bestMonthIndex) {
+            const resultsDiv = document.getElementById('results');
+            const greetingP = document.getElementById('userGreeting');
+            const monthlyResultsDiv = document.getElementById('monthlyResults');
+            
+            // Set greeting message
+            const dobFormatted = new Date(dob).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            greetingP.textContent = `Hi ${name}, based on your birth date (${dobFormatted}), here are your monthly chances:`;
+            
+            // Generate HTML for all months
+            let html = '';
+            percentages.forEach((percentage, index) => {
+                const isBest = index === bestMonthIndex;
+                const month = months[index];
+                const caption = getCaption(percentage, isBest);
+                
+                html += `
+                    <div class="month-item ${isBest ? 'best' : ''}">
+                        <div class="month-name">${month.emoji} ${month.name}</div>
+                        <div class="percentage">${percentage}%</div>
+                        <div class="caption">
+                            ${caption}
+                            ${isBest ? '<span class="best-badge">Best Month</span>' : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            monthlyResultsDiv.innerHTML = html;
+            
+            // Show results with smooth scroll
+            resultsDiv.classList.add('show');
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
